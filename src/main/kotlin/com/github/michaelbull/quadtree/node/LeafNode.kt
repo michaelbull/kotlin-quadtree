@@ -5,9 +5,9 @@ import com.github.michaelbull.quadtree.math.Point
 
 class LeafNode(
     capacity: Int,
-    depth: Int,
+    levels: Int,
     boundingBox: BoundingBox
-) : Node(capacity, depth, boundingBox) {
+) : Node(capacity, levels, boundingBox) {
 
     private val points = mutableListOf<Point>()
 
@@ -39,22 +39,22 @@ class LeafNode(
         val centreX = (x1 - x0) / 2
         val centreY = (y1 - y0) / 2
 
-        val newDepth = levels - 1
+        val nextLevel = levels - 1
 
         val branch = BranchNode(capacity, levels, boundingBox,
-            northEast = LeafNode(capacity, newDepth, BoundingBox(
+            northEast = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0 + centreX, y0 + centreY),
                 topRight = Point(x1, y1)
             )),
-            northWest = LeafNode(capacity, newDepth, BoundingBox(
+            northWest = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0, y0 + centreY),
                 topRight = Point(x0 + centreX, y1)
             )),
-            southEast = LeafNode(capacity, newDepth, BoundingBox(
+            southEast = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0 + centreX, y0),
                 topRight = Point(x1, y0 + centreY)
             )),
-            southWest = LeafNode(capacity, newDepth, BoundingBox(
+            southWest = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0, y0),
                 topRight = Point(x0 + centreX, y0 + centreY)
             ))

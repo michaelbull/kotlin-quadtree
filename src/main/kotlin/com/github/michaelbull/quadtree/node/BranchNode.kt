@@ -5,13 +5,13 @@ import com.github.michaelbull.quadtree.math.Point
 
 class BranchNode(
     capacity: Int,
-    depth: Int,
+    levels: Int,
     boundingBox: BoundingBox,
     private var northEast: Node,
     private var northWest: Node,
     private var southEast: Node,
     private var southWest: Node
-) : Node(capacity, depth, boundingBox) {
+) : Node(capacity, levels, boundingBox) {
 
     override fun insert(point: Point): Node {
         when (point) {
