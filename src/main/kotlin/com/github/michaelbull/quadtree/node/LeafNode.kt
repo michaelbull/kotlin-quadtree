@@ -25,7 +25,7 @@ class LeafNode(boundingBox: BoundingBox) : Node(boundingBox) {
         }
     }
 
-    private fun split(): Node {
+    private fun split(): BranchNode {
         val (bottomLeft, topRight) = boundingBox
         val (x0, y0) = bottomLeft
         val (x1, y1) = topRight
