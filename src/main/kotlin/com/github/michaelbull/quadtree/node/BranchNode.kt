@@ -4,17 +4,14 @@ import com.github.michaelbull.quadtree.math.BoundingBox
 import com.github.michaelbull.quadtree.math.Point
 
 class BranchNode(
+    capacity: Int,
+    depth: Int,
     boundingBox: BoundingBox,
-    points: List<Point>,
     private var northEast: Node,
     private var northWest: Node,
     private var southEast: Node,
     private var southWest: Node
-) : Node(boundingBox) {
-
-    init {
-        points.forEach { point -> insert(point) }
-    }
+) : Node(capacity, depth, boundingBox) {
 
     override fun insert(point: Point): Node {
         when (point) {

@@ -3,17 +3,23 @@ package com.github.michaelbull.quadtree.node
 import com.github.michaelbull.quadtree.math.BoundingBox
 import com.github.michaelbull.quadtree.math.Point
 
-class LeafNode(boundingBox: BoundingBox) : Node(boundingBox) {
+class LeafNode(
+    capacity: Int,
+    depth: Int,
+    boundingBox: BoundingBox
+) : Node(capacity, depth, boundingBox) {
+
     private val points = mutableListOf<Point>()
 
     override fun insert(point: Point): Node {
         return when {
             point !in this -> this
-            points.size >= CAPACITY -> split().insert(point)
-            else -> {
+            points.size < capacity -> {
                 points += point
                 this
             }
+            levels >= 0 -> split().insert(point)
+            else -> this
         }
     }
 
@@ -33,29 +39,29 @@ class LeafNode(boundingBox: BoundingBox) : Node(boundingBox) {
         val centreX = (x1 - x0) / 2
         val centreY = (y1 - y0) / 2
 
-        return BranchNode(
-            boundingBox,
-            points,
-            northEast = LeafNode(BoundingBox(
+        val newDepth = levels - 1
+
+        val branch = BranchNode(capacity, levels, boundingBox,
+            northEast = LeafNode(capacity, newDepth, BoundingBox(
                 bottomLeft = Point(x0 + centreX, y0 + centreY),
                 topRight = Point(x1, y1)
             )),
-            northWest = LeafNode(BoundingBox(
+            northWest = LeafNode(capacity, newDepth, BoundingBox(
                 bottomLeft = Point(x0, y0 + centreY),
                 topRight = Point(x0 + centreX, y1)
             )),
-            southEast = LeafNode(BoundingBox(
+            southEast = LeafNode(capacity, newDepth, BoundingBox(
                 bottomLeft = Point(x0 + centreX, y0),
                 topRight = Point(x1, y0 + centreY)
             )),
-            southWest = LeafNode(BoundingBox(
+            southWest = LeafNode(capacity, newDepth, BoundingBox(
                 bottomLeft = Point(x0, y0),
                 topRight = Point(x0 + centreX, y0 + centreY)
             ))
         )
-    }
 
-    private companion object {
-        private const val CAPACITY = 10
+        points.forEach { branch.insert(it) }
+
+        return branch
     }
 }
