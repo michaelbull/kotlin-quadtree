@@ -13,7 +13,12 @@ import com.github.michaelbull.quadtree.node.Node
  * @param capacity The maximum amount of [points][Point] a [LeafNode] may store before [splitting][LeafNode.split] into a [BranchNode].
  * @param levels The amount of levels the quadtree may grow in depth.
  */
-class QuadTree(boundingBox: BoundingBox, capacity: Int = 200, levels: Int = 10) {
+class QuadTree(
+    boundingBox: BoundingBox,
+    capacity: Int = 200,
+    levels: Int = 10
+) {
+
     private var root: Node = LeafNode(capacity, levels, boundingBox)
 
     fun insert(point: Point) {
