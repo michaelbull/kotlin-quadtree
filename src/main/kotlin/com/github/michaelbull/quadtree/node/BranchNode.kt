@@ -7,26 +7,26 @@ class BranchNode(
     capacity: Int,
     levels: Int,
     boundingBox: BoundingBox,
-    private var northEast: Node,
-    private var northWest: Node,
-    private var southEast: Node,
-    private var southWest: Node
+    private var quadrant1: Node,
+    private var quadrant2: Node,
+    private var quadrant3: Node,
+    private var quadrant4: Node
 ) : Node(capacity, levels, boundingBox) {
 
     override fun insert(point: Point): Node {
         require(point in this) { "$point is outside of $this" }
 
-        if (point.x >= northEast.boundingBox.bottomLeft.x) {
-            if (point.y >= northEast.boundingBox.bottomLeft.y) {
-                northEast = northEast.insert(point)
+        if (point.y >= quadrant1.boundingBox.bottomLeft.y) {
+            if (point.x >= quadrant1.boundingBox.bottomLeft.x) {
+                quadrant1 = quadrant1.insert(point)
             } else {
-                southEast = southEast.insert(point)
+                quadrant2 = quadrant2.insert(point)
             }
         } else {
-            if (point.y >= northWest.boundingBox.bottomLeft.y) {
-                northWest = northWest.insert(point)
+            if (point.x >= quadrant4.boundingBox.bottomLeft.x) {
+                quadrant4 = quadrant4.insert(point)
             } else {
-                southWest = southWest.insert(point)
+                quadrant3 = quadrant3.insert(point)
             }
         }
 
@@ -35,7 +35,7 @@ class BranchNode(
 
     override fun intersect(other: BoundingBox): List<Point> {
         return if (boundingBox.intersects(other)) {
-            northEast.intersect(other) + northWest.intersect(other) + southEast.intersect(other) + southWest.intersect(other)
+            quadrant1.intersect(other) + quadrant2.intersect(other) + quadrant4.intersect(other) + quadrant3.intersect(other)
         } else {
             emptyList()
         }

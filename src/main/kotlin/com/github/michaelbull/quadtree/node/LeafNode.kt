@@ -43,21 +43,21 @@ class LeafNode(
         val nextLevel = levels - 1
 
         val branch = BranchNode(capacity, levels, boundingBox,
-            northEast = LeafNode(capacity, nextLevel, BoundingBox(
+            quadrant1 = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0 + centreX, y0 + centreY),
                 topRight = Point(x1, y1)
             )),
-            northWest = LeafNode(capacity, nextLevel, BoundingBox(
+            quadrant2 = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0, y0 + centreY),
                 topRight = Point(x0 + centreX, y1)
             )),
-            southEast = LeafNode(capacity, nextLevel, BoundingBox(
-                bottomLeft = Point(x0 + centreX, y0),
-                topRight = Point(x1, y0 + centreY)
-            )),
-            southWest = LeafNode(capacity, nextLevel, BoundingBox(
+            quadrant3 = LeafNode(capacity, nextLevel, BoundingBox(
                 bottomLeft = Point(x0, y0),
                 topRight = Point(x0 + centreX, y0 + centreY)
+            )),
+            quadrant4 = LeafNode(capacity, nextLevel, BoundingBox(
+                bottomLeft = Point(x0 + centreX, y0),
+                topRight = Point(x1, y0 + centreY)
             ))
         )
 
