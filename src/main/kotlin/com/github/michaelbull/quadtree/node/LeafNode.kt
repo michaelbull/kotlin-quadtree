@@ -12,14 +12,15 @@ class LeafNode(
     private val points = mutableListOf<Point>()
 
     override fun insert(point: Point): Node {
+        require(point in boundingBox) { "$point is outside of $this" }
+
         return when {
-            point !in this -> this
             points.size < capacity -> {
                 points += point
                 this
             }
             levels >= 0 -> split().insert(point)
-            else -> this
+            else -> error { "$this is at capacity and has no remaining levels to split into" }
         }
     }
 
@@ -63,5 +64,9 @@ class LeafNode(
         points.forEach { branch.insert(it) }
 
         return branch
+    }
+
+    override fun toString(): String {
+        return "LeafNode(capacity=$capacity, levels=$levels, boundingBox=$boundingBox, points=$points)"
     }
 }

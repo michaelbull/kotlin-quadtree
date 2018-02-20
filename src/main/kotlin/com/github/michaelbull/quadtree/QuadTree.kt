@@ -28,4 +28,8 @@ class QuadTree(
     fun intersect(other: BoundingBox): List<Point> {
         return root.intersect(other)
     }
+
+    override fun toString(): String {
+        return "QuadTree(root=$root)"
+    }
 }

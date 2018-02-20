@@ -14,12 +14,22 @@ class BranchNode(
 ) : Node(capacity, levels, boundingBox) {
 
     override fun insert(point: Point): Node {
-        when (point) {
-            in northEast -> northEast = northEast.insert(point)
-            in northWest -> northWest = northWest.insert(point)
-            in southEast -> southEast = southEast.insert(point)
-            in southWest -> southWest = southWest.insert(point)
+        require(point in this) { "$point is outside of $this" }
+
+        if (point.x >= northEast.boundingBox.bottomLeft.x) {
+            if (point.y >= northEast.boundingBox.bottomLeft.y) {
+                northEast = northEast.insert(point)
+            } else {
+                southEast = southEast.insert(point)
+            }
+        } else {
+            if (point.y >= northWest.boundingBox.bottomLeft.y) {
+                northWest = northWest.insert(point)
+            } else {
+                southWest = southWest.insert(point)
+            }
         }
+
         return this
     }
 
@@ -29,5 +39,9 @@ class BranchNode(
         } else {
             emptyList()
         }
+    }
+
+    override fun toString(): String {
+        return "BranchNode(capacity=$capacity, levels=$levels, boundingBox=$boundingBox)"
     }
 }
