@@ -35,7 +35,7 @@ class BranchNode(
 
     override fun intersect(other: BoundingBox): List<Point> {
         return if (boundingBox.intersects(other)) {
-            quadrant1.intersect(other) + quadrant2.intersect(other) + quadrant4.intersect(other) + quadrant3.intersect(other)
+            quadrant1.intersect(other) + quadrant2.intersect(other) + quadrant3.intersect(other) + quadrant4.intersect(other)
         } else {
             emptyList()
         }
